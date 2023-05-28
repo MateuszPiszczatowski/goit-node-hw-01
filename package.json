@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "First homework for node module in GOIT Fullstack MERN  course",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node ./index.js",
     "start:dev": "nodemon ./index.js",
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/MateuszPiszczatowski/goit-node-hw-01#readme",
   "dependencies": {
+    "commander": "^10.0.1",
+    "nanoid": "^4.0.2",
     "nodemon": "^2.0.22"
   }
 }

@@ -14,9 +14,21 @@ program.parse(process.argv);
 
 const argv = program.opts();
 
+const handleList = async () => {
+  try {
+    await contactsHandler.listContacts();
+  } catch (error) {
+    console.log("Couldn't list contacts: ", error.message);
+  }
+};
+
 const handleGet = async (id) => {
   if (id) {
-    console.table(await contactsHandler.getContactById(id));
+    try {
+      console.table(await contactsHandler.getContactById(id));
+    } catch (error) {
+      console.log("Couldn't get contacts: ", error.message);
+    }
   } else {
     console.log("You need to provide an id to use that option");
   }
@@ -24,9 +36,13 @@ const handleGet = async (id) => {
 
 const handleAdd = async (name, email, phone) => {
   if (name && email && phone) {
-    const addedContact = await contactsHandler.addContact(name, email, phone);
-    console.log("Added contact:");
-    console.table(addedContact);
+    try {
+      const addedContact = await contactsHandler.addContact(name, email, phone);
+      console.log("Added contact:");
+      console.table(addedContact);
+    } catch (error) {
+      console.log("Couldn't add contacts: ", error.message);
+    }
   } else {
     console.log("Name, email and phone number need to be provided to use that option");
   }
@@ -34,10 +50,14 @@ const handleAdd = async (name, email, phone) => {
 
 const handleRemove = async (id) => {
   if (id) {
-    if (await contactsHandler.removeContact(id)) {
-      console.log(`Successfully deleted contact with id "${id}"`);
-    } else {
-      console.log(`Could not find any contact with id "${id}" `);
+    try {
+      if (await contactsHandler.removeContact(id)) {
+        console.log(`Successfully deleted contact with id "${id}"`);
+      } else {
+        console.log(`Could not find any contact with id "${id}" `);
+      }
+    } catch (error) {
+      console.log("Couldn't remove contacts: ", error.message);
     }
   } else {
     console.log("You need to provide an id to use that option");
@@ -47,7 +67,7 @@ const handleRemove = async (id) => {
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      await contactsHandler.listContacts();
+      await handleList();
       break;
     case "get":
       await handleGet(id);
